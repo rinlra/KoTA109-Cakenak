@@ -1,0 +1,148 @@
+$(document).ready(function () {
+
+    //---------------- event on page ------------------------
+    //init number of product for user
+    if ("idpembeli" in window)
+        getInitProductNumber(idpembeli);
+
+    //add in home & shop page
+    $('.add-to-cart').click(function () {
+        var idkue = $(this).attr('idkue');
+        addProduct(idkue, 1);
+    });
+
+    //add from product details
+    $('.add-to-my').click(function () {
+        var idkue = $(this).attr('idkue');
+        var quantity = $("#quan").val();
+        addProduct(idkue, quantity);
+    });
+    
+    $(".cart_quantity_down").click(function(){
+        var idkue = $(this).attr('idkue').substring(2);
+        //check if number of product greater than zero 
+        if($("#V_"+idkue).val() > 1 )
+            reduceProduct(idkue);
+    });
+    
+    $(".cart_quantity_up").click(function(){
+        var idkue = $(this).attr('idkue').substring(2);
+        increaseProduct(idkue);
+    });
+ 
+    //------------------ function on page ---------------------
+
+    // add product to cart
+    function addProduct(idkue, quantity) {
+        $.ajax({
+            url: 'addCart', //servlet url
+            type: 'GET',
+            data: {"idkue": idkue, "quantity": quantity},
+            success: (data) => {
+                if (data.redirect) {
+                    // data.redirect contains the string URL to redirect to
+                    window.location.href = data.redirect;
+                }else{
+                    $("#number").html(data);
+                    showNotification('product add to your cart','success');
+                }
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("error");
+                if (thrownError.redirect.length) {
+                    window.location.replace(thrownError.redirect);
+                } else {
+                    alert('There was an error processing your request, please try again');
+                }
+            }
+        });
+    }
+
+    function getInitProductNumber(idkue) {
+        $.ajax({
+            url: 'getCartCount', //servlet url
+            type: 'GET',
+            data: {"idkue": idkue},
+            success: (data) => {
+                $("#number").html(data);
+            }
+        });
+    }
+    
+    //reduce product from cart 
+    function reduceProduct(idkue){
+       $.ajax({
+            url: 'ReduceQuantity', //servlet url
+            type: 'GET',
+            data: {"idkue": idkue},
+            success: (data) => {
+                if (data.redirect) {
+                    // data.redirect contains the string URL to redirect to
+                    window.location.href = data.redirect;
+                }else{
+                    $("#number").html(data);
+                    showNotification('product Quantity decrease from your cart','success');
+                    reCalculateDecrease(idkue);
+                }
+                
+            }
+        });
+    }
+    
+    //increase product to cart 
+    function increaseProduct(idkue){
+        $.ajax({
+            url: 'increaseQuantity', //servlet url
+            type: 'GET',
+            data: {"idkue": idkue},
+            success: (data) => {
+                if (data.redirect) {
+                    // data.redirect contains the string URL to redirect to
+                    window.location.href = data.redirect;
+                }else{
+                    $("#number").html(data);
+                    showNotification('product Quantity increase to your cart','success');
+                    reCalculateIncrease(idkue);
+                }
+                
+            }
+        });
+    }
+    
+    //recalculate harga and total harga of prodcut
+    function reCalculateDecrease(idkue){
+        //get harga for peice 
+        // #P_id is idkue div for harga & substring to remove $ sign
+        var harga = parseInt($("#P_"+idkue).text().substring(1));
+        //get quantity
+        $("#V_"+idkue).val($("#V_"+idkue).val()-1);
+        var pieces = parseInt($("#V_"+idkue).val());
+        //edit total for pieces 
+        $("#T_"+idkue).text("$"+( pieces*harga) );
+        
+        //edit total and sub total harga
+        var total = parseInt($("#subTotal").text().substring(1));
+        $("#subTotal").text("$"+(total - harga));
+        $("#total").text("$"+(total - harga));
+        
+    }
+    
+    //recalculate harga and total harga of prodcut
+    function reCalculateIncrease(idkue){
+        //get harga for peice 
+        // #P_id is idkue div for harga & substring to remove $ sign
+        var harga = parseInt($("#P_"+idkue).text().substring(1));
+        //get quantity
+        var pieces = parseInt($("#V_"+idkue).val()) + 1 ;
+        $("#V_"+idkue).val(pieces);
+        //edit total for pieces 
+        $("#T_"+idkue).text("$"+( pieces*harga ) );
+        
+        //edit total and sub total harga
+        var total = parseInt($("#subTotal").text().substring(1));
+        $("#subTotal").text("$"+(total + harga));
+        $("#total").text("$"+(total + harga));
+    }
+    
+});

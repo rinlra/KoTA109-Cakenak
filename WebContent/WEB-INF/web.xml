@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+  <display-name>tokokue2</display-name>
+<!--   <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list> -->
+  <servlet>
+    <description></description>
+    <display-name>HomeController</display-name>
+    <servlet-name>HomeController</servlet-name>
+    <servlet-class>controller.HomeController</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+    <servlet-name>HomeController</servlet-name>
+    <url-pattern>/HomeController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Slider</display-name>
+    <servlet-name>Slider</servlet-name>
+    <servlet-class>controller.Slider</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+    <servlet-name>Slider</servlet-name>
+    <url-pattern>/SliderIndex</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AdminIndex</display-name>
+    <servlet-name>AdminIndex</servlet-name>
+    <servlet-class>controller.admin.AdminIndex</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+    <servlet-name>AdminIndex</servlet-name>
+    <url-pattern>/AdminIndex</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>IndexPenjual</display-name>
+    <servlet-name>IndexPenjual</servlet-name>
+    <servlet-class>controller.penjual.IndexPenjual</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+    <servlet-name>IndexPenjual</servlet-name>
+    <url-pattern>/IndexPenjual</url-pattern>
+  </servlet-mapping>
+  
+<!--   <display-name>tokokue2</display-name>
+   <servlet>
+    <description></description>
+    <display-name>ActionController</display-name>
+    <servlet-name>ActionController</servlet-name>
+    <servlet-class>controller.ActionController</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+    <servlet-name>ActionController</servlet-name>
+    <url-pattern>/ActionController</url-pattern>
+  </servlet-mapping>  -->
+<!--     <context-param> 
+      <description>Location to store uploaded file</description> 
+      <param-name>file-upload</param-name> 
+      <param-value>
+         D:\program_files\Apache\Tomcat\webapps\data\
+      </param-value> 
+   </context-param> -->
+   <error-page>
+        <!-- Missing login -->
+        <error-code>401</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <!-- Forbidden directory listing -->
+        <error-code>403</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <!-- Missing resource -->
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+    <error-page>
+        <!-- Uncaught exception -->
+        <error-code>500</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <!-- Unsupported servlet method -->
+        <error-code>503</error-code>
+        <location>/error.html</location>
+    </error-page>
+    
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
