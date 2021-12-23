@@ -1,6 +1,6 @@
 # Cakenak
 
-Marketplace Webapp yang menggunakan HBase sebagai backend data.
+Marketplace Webapp yang menggunakan HBase sebagai Database.
 
 Req :
 - Apache Tomcat v7 - 9
